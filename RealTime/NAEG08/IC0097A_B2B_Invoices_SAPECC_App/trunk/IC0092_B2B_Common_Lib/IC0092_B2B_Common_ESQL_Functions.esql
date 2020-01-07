@@ -1,0 +1,21 @@
+
+CREATE FUNCTION GetYYMMDD (IN sourceString CHARACTER, IN formatString CHARACTER, IN destFormatString CHARACTER)
+RETURNS CHARACTER
+BEGIN
+	DECLARE returnString CHARACTER;
+	
+	IF sourceString IS NULL THEN 
+		RETURN sourceString;
+	END IF;
+	
+	IF LENGTH(sourceString) <= 6 THEN
+		SET returnString = sourceString;
+	ELSEIF LENGTH(TRIM(sourceString)) <= 10 THEN
+		SET returnString =  CAST(CAST(sourceString AS DATE FORMAT formatString) AS CHARACTER FORMAT destFormatString);
+	ELSE
+		--Get the date part, from the supplied string		
+		SET returnString =   CAST(CAST(LEFT(sourceString, 10) AS DATE FORMAT formatString) AS CHARACTER FORMAT destFormatString);
+	END IF;
+	
+	RETURN returnString;
+END;

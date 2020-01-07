@@ -1,0 +1,28 @@
+
+
+Importing file: P:\B2B\schemas\order\DatesRequest.wsdl
+
+The WSDL import will proceed with bindings DateRequest_SOAP_HTTP_Binding.
+Creating wsdl schema document for file:///P:/B2B/schemas/order/DatesRequest.wsdl.
+Parsing wsdl binding {http://congo.electrolux.com/dates/broom}DateRequest_SOAP_HTTP_Binding.
+Parsing wsdl binding input DeliveryCal.
+Parsing wsdl binding output DeliveryCal.
+Parsing wsdl binding input ShipmentDate.
+Parsing wsdl binding output ShipmentDate.
+Parsing wsdl binding input FirstDeliveryDate.
+Parsing wsdl binding output FirstDeliveryDate.
+Processing doc style for operation DeliveryCal.
+Processing doc style for operation ShipmentDate.
+Processing doc style for operation FirstDeliveryDate.
+Populating WSDL schema DatesRequest_wsdl.xsd.
+Creating file DatesRequest_wsdl.xsd in the workspace.
+Creating file /IC0092_B2B_Common_Lib/DatesRequest.xsd in the workspace.
+Copying source WSDL DatesRequest.wsdl to DatesRequest.wsdl.
+
+Elapsed time processing this message definition file: 0.248 seconds
+Number of warnings for this message definition file: 0
+
+
+Number of files processed: 1
+
+

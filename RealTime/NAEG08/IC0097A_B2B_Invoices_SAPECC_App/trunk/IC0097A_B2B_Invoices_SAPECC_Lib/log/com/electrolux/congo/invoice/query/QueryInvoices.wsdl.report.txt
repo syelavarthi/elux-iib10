@@ -1,0 +1,25 @@
+
+
+Importing file: P:\B2B\schemas\Invoice\QueryInvoices.wsdl
+
+The WSDL import will proceed with bindings InvoiceInfo_SOAP_HTTP_Binding.
+Creating wsdl schema document for file:///P:/B2B/schemas/Invoice/QueryInvoices.wsdl.
+Parsing wsdl binding {http://congo.electrolux.com/invoice/query}InvoiceInfo_SOAP_HTTP_Binding.
+Parsing wsdl binding input GetInvoiceList.
+Parsing wsdl binding output GetInvoiceList.
+Parsing wsdl binding input GetInvoiceFile.
+Parsing wsdl binding output GetInvoiceFile.
+Processing doc style for operation GetInvoiceList.
+Processing doc style for operation GetInvoiceFile.
+Populating WSDL schema QueryInvoices_wsdl.xsd.
+Creating file QueryInvoices_wsdl.xsd in the workspace.
+Creating file /IC0097_B2B_Invoices_Lib/QueryInvoices.xsd in the workspace.
+Copying source WSDL QueryInvoices.wsdl to QueryInvoices.wsdl.
+
+Elapsed time processing this message definition file: 0.234 seconds
+Number of warnings for this message definition file: 0
+
+
+Number of files processed: 1
+
+

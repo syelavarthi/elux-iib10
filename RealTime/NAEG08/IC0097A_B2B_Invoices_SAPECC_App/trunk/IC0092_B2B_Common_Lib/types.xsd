@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?><schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://hybris.electrolux.com/integration/common/types" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:cn="http://hybris.electrolux.com/integration/common/types" xmlns:xml="http://www.w3.org/XML/1998/namespace">
+
+	<import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
+
+	<complexType name="LocalizedString">
+		<sequence>
+			<element maxOccurs="unbounded" name="values">
+				<complexType>
+					<simpleContent>
+						<extension base="string">
+							<attribute ref="xml:lang" use="required"/>
+						</extension>
+					</simpleContent>
+				</complexType>
+			</element>
+		</sequence>
+	</complexType>
+
+	<simpleType name="Code">
+		<restriction base="string">
+			<minLength value="1"/>
+			<whiteSpace value="collapse"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="Currency">
+		<restriction base="string">
+			<enumeration value="USD"/>
+		</restriction>
+	</simpleType>
+	
+	<complexType name="TimeStampable">
+		<attribute name="lastModified" type="dateTime" use="optional"/>
+	</complexType>
+	
+	<simpleType name="StateIsoCode">
+		<restriction base="cn:Code">
+			<pattern value="[A-Z]{2}"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="CountryIsoCode">
+		<restriction base="cn:Code">
+			
+		</restriction>
+	</simpleType>
+
+	<simpleType name="PhoneNumber">
+		<restriction base="string">
+			<pattern value="[0-9]{1,10}"/>
+		</restriction>
+	</simpleType>
+	<simpleType name="PhoneNumberExt">
+		<restriction base="string">
+			<pattern value="[0-9]{0,5}"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="EmailAddress">
+		<restriction base="string">
+			<pattern value="[^@]+@[^\.]+\..+"/>
+		</restriction>
+	</simpleType>
+	
+	<simpleType name="Amount">
+	 	<restriction base="decimal">
+	    </restriction>
+	</simpleType>
+	<simpleType name="PercentageAdjustment">
+	 	<restriction base="decimal">
+	      <minInclusive value="0"/>
+	      <maxInclusive value="100"/>
+	    </restriction>
+	</simpleType>
+	<simpleType name="PositiveAmount">
+	 	<restriction base="cn:Amount">
+	      <minInclusive value="0"/>
+	    </restriction>
+	</simpleType>
+	
+	<simpleType name="BillToNumber">
+		<restriction base="cn:Code">
+			<pattern value="[A-Z0-9]{5}"/>
+		</restriction>
+	</simpleType>
+
+	<simpleType name="ShipToNumber">
+		<restriction base="cn:Code">
+			<pattern value="[A-Z0-9]{8}"/>
+		</restriction>
+	</simpleType>
+	
+	<simpleType name="ShipToSuffix">
+		<restriction base="cn:Code">
+			<pattern value="[0-9]{3}"/>
+		</restriction>
+	</simpleType>
+	
+	<complexType name="Address">
+		<sequence>
+			<element minOccurs="0" name="contactFirstName" type="string"/>
+			<element minOccurs="0" name="contactLastName" type="string"/>
+			<element minOccurs="0" name="contactPhoneNumber" type="string"/>
+			<element minOccurs="0" name="contactEmail" type="string"/>
+			<element minOccurs="0" name="line1" type="string"/>
+			<element minOccurs="0" name="line2" type="string"/>
+			<element minOccurs="0" name="line3" type="string"/>
+			<element name="city" type="string"/>
+			<element name="stateIsoCode" type="cn:StateIsoCode"/>
+			<element name="postalCode" type="string"/>
+			<element name="countryIsoCode" type="cn:CountryIsoCode"/>
+		</sequence>
+	</complexType>
+	
+</schema>

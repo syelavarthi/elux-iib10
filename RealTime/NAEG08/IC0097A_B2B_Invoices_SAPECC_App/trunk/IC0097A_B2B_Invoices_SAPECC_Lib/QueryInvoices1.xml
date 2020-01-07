@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<p:InvoiceDocumentRequest xmlns:p="http://congo.electrolux.com/invoice/query" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://congo.electrolux.com/invoice/query QueryInvoices.xsd ">
+  <UserName>UserName</UserName>
+  <SpecifiedUser>SpecifiedUser</SpecifiedUser>
+  <CustomerName>CustomerName</CustomerName>
+  <GroupName>GroupName</GroupName>
+  <RetrievalName>RetrievalName</RetrievalName>
+  <DocDescriptor Value=""/>
+  <DisplayOption Option="TEXT"/>
+  <GenerateAnnotations Value="True"/>
+  <GenerateBookmarks Value="True"/>
+  <Linearize Value="True"/>
+  <UsePreprintedForm Value="True"/>
+  <AcrobatVersion Value=""/>
+  <AuditText>AuditText</AuditText>
+  <PrivateData xsi:type="anyType"/>
+  <RequestTimeout Seconds="0"/>
+  <ReturnFilename>
+    <LeaveOnDisk Minutes="0"/>
+  </ReturnFilename>
+  <RodanID>RodanID</RodanID>
+</p:InvoiceDocumentRequest>

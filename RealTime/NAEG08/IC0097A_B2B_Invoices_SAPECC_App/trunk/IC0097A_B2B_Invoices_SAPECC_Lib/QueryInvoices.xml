@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<p:InvoiceListRequest xmlns:p="http://congo.electrolux.com/invoice/query" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://congo.electrolux.com/invoice/query QueryInvoices.xsd ">
+  <RequesterID>RequesterID</RequesterID>
+  <RetrievalName>RetrievalName</RetrievalName>
+  <CustomerID>CustomerID</CustomerID>
+  <QueryExpression>
+    <QueryFieldName>IF_EDS_InvNo</QueryFieldName>
+    <QueryOperator Operator="IsNull"/>
+    <QueryValue1>QueryValue1</QueryValue1>
+    <QueryValue2>QueryValue2</QueryValue2>
+  </QueryExpression>
+  <SortBy>
+    <SortFieldName>IF_EDS_InvNo</SortFieldName>
+    <SortOrder>0</SortOrder>
+  </SortBy>
+  <MaxRows Value="0"/>
+  <RequestTimeout Seconds="0"/>
+</p:InvoiceListRequest>

@@ -1,0 +1,39 @@
+
+
+CREATE PROCEDURE GetErrorFromExceptionList(IN InputTree reference, INOUT messageText CHARACTER)	
+    /****************************************************************************
+	 * A procedure that will get the details of the last exception from a message
+	 * IN InputTree:  The incoming exception list
+	 * IN messageText: The compiled message text.
+	 *****************************************************************************/
+   BEGIN
+   	
+   	DECLARE i INTEGER 1;
+   	
+   	    -- Create a reference to the first child of the exception list
+   	    declare ptrException reference to InputTree.*[1];
+   	    -- keep looping while the moves to the child of exception list work 
+		WHILE lastmove(ptrException) DO
+			-- store the current values for the error number and text
+			IF ptrException.Number is not null THEN
+        		SET messageText =  COALESCE(messageText || '; ', '') ||  COALESCE(ptrException.Text, '');
+  			END IF;
+  			-- now move to the last child which should be the next exceptionlist
+			move ptrException lastchild;
+		END WHILE; 
+		
+		--We'll be here at the Last exception.. Look for Insert[] tags and get the error
+		move ptrException PARENT;
+		IF FIELDNAME(ptrException) = 'Insert' THEN
+			move ptrException PARENT;
+		END IF;
+		
+		IF CARDINALITY(ptrException.Insert[]) > 0 THEN
+			WHILE i <= CARDINALITY(ptrException.Insert[]) DO
+				IF ptrException.Insert[i].Type = 5 THEN
+					SET messageText =  COALESCE(messageText || '; ', '') ||  COALESCE(ptrException.Insert[i].Text, '');
+				END IF;
+				SET i = i + 1;
+			END WHILE;
+		END IF;
+	END;

@@ -1,0 +1,14 @@
+
+CREATE PROCEDURE set_message_available (INOUT environment REFERENCE, IN value BOOLEAN) BEGIN
+	SET environment.Variables.MessageAvailable = value;
+END;
+
+CREATE FUNCTION is_message_available (IN environment REFERENCE) RETURNS BOOLEAN
+BEGIN
+	
+	IF NULLIF(CAST(environment.Variables.MessageAvailable AS CHAR), '') IS NOT NULL THEN
+		RETURN environment.Variables.MessageAvailable;
+	ELSE
+		RETURN FALSE;
+	END IF;
+END;

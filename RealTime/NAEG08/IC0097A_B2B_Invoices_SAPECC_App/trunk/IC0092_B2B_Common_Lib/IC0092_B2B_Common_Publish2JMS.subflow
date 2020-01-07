@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ComIbmCompute.msgnode="ComIbmCompute.msgnode" xmlns:ComIbmJMSClientOutput.msgnode="ComIbmJMSClientOutput.msgnode" xmlns:ComIbmMQJMSTransform.msgnode="ComIbmMQJMSTransform.msgnode" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" nsURI="IC0092_B2B_Common_Publish2JMS.subflow"
+    nsPrefix="IC0092_B2B_Common_Publish2JMS.subflow">
+  <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1">
+    <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.IntegrationName" name="IntegrationName" lowerBound="1" defaultValueLiteral="IntName">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.Sender" name="Sender" lowerBound="1" defaultValueLiteral="Congo">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.Receiver" name="Receiver" lowerBound="1" defaultValueLiteral="Hybris">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.TranType" name="TranType" lowerBound="1" defaultValueLiteral="O">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.IntegrationPrefix" name="IntegrationPrefix" lowerBound="1" defaultValueLiteral="PREFIX">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.topic" name="topic" defaultValueLiteral="prod2hybris">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.connectionFactoryName" name="connectionFactoryName" defaultValueLiteral="tcf1">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.initialContextFactory" name="initialContextFactory" defaultValueLiteral="com.sun.jndi.fscontext.RefFSContextFactory">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.jmsProviderName" name="jmsProviderName" lowerBound="1" defaultValueLiteral="ibmMQ">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.locationJndiBindings" name="locationJndiBindings" defaultValueLiteral="file:/C:/JNDI-Directory">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.PublishPayload" name="PublishPayload" lowerBound="1" defaultValueLiteral="true">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    </eStructuralFeatures>
+    <translation xmi:type="utility:TranslatableString" key="IC0092_B2B_Common_Publish2JMS" bundleName="IC0092_B2B_Common_Publish2JMS" pluginId="IC0092_B2B_Common_Lib"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/IC0092_B2B_Common_Lib/icons/full/obj16/IC0092_B2B_Common_Publish2JMS.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/IC0092_B2B_Common_Lib/icons/full/obj30/IC0092_B2B_Common_Publish2JMS.gif"/>
+    <composition>
+      <nodes xmi:type="ComIbmJMSClientOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="459,147" topic="prod2hybris" locationJndiBindings="file:/C:/JNDI-Directory" connectionFactoryName="tcf1" transactionMode="yes" messageType="jms_text">
+        <translation xmi:type="utility:ConstantString" string="JMS Output"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQJMSTransform.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="174,142">
+        <translation xmi:type="utility:ConstantString" string="MQ JMS Transform"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="342,146" computeExpression="esql://routine/#IC0092_B2B_Common_Publish2JMS_SetCorrelationId.Main">
+        <translation xmi:type="utility:ConstantString" string="SetCorrelationId"/>
+      </nodes>
+      <nodes xmi:type="eflow:FCMSource" xmi:id="InTerminal.Input" location="78,142">
+        <translation xmi:type="utility:TranslatableString" key="InTerminal.Input" bundleName="IC0092_B2B_Common_Publish2JMS" pluginId="IC0092_B2B_Common_Lib"/>
+      </nodes>
+      <nodes xmi:type="eflow:FCMSink" xmi:id="OutTerminal.Output" location="578,151">
+        <translation xmi:type="utility:TranslatableString" key="OutTerminal.Output" bundleName="IC0092_B2B_Common_Publish2JMS" pluginId="IC0092_B2B_Common_Lib"/>
+      </nodes>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_1" targetNode="FCMComposite_1_1" sourceNode="FCMComposite_1_3" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_2" targetNode="FCMComposite_1_3" sourceNode="FCMComposite_1_2" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_3" targetNode="FCMComposite_1_2" sourceNode="InTerminal.Input" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_4" targetNode="OutTerminal.Output" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+    </composition>
+    <propertyOrganizer>
+      <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.IntegrationName">
+        <propertyName xmi:type="utility:TranslatableString" key="Property.IntegrationName" bundleName="IC0092_B2B_Common_Publish2JMS" pluginId="IC0092_B2B_Common_Lib"/>
+        <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.Sender">
+          <propertyName xmi:type="utility:TranslatableString" key="Property.Sender" bundleName="IC0092_B2B_Common_Publish2JMS" pluginId="IC0092_B2B_Common_Lib"/>
+          <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.Receiver">
+            <propertyName xmi:type="utility:TranslatableString" key="Property.Receiver" bundleName="IC0092_B2B_Common_Publish2JMS" pluginId="IC0092_B2B_Common_Lib"/>
+            <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.TranType">
+              <propertyName xmi:type="utility:TranslatableString" key="Property.TranType" bundleName="IC0092_B2B_Common_Publish2JMS" pluginId="IC0092_B2B_Common_Lib"/>
+              <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.IntegrationPrefix">
+                <propertyName xmi:type="utility:TranslatableString" key="Property.IntegrationPrefix" bundleName="IC0092_B2B_Common_Publish2JMS" pluginId="IC0092_B2B_Common_Lib"/>
+                <propertyDescriptor groupName="Group.Basic" propertyEditor="com.ibm.etools.mft.ibmnodes.editors.jms.PublicationTopicPropertyEditor" configurable="true" describedAttribute="Property.topic">
+                  <propertyName xmi:type="utility:TranslatableString" key="Property.topic" bundleName="ComIbmJMSClientOutput" pluginId="com.ibm.etools.mft.ibmnodes"/>
+                  <propertyDescriptor groupName="Group.JMS_Connection" configurable="true" describedAttribute="Property.connectionFactoryName">
+                    <propertyName xmi:type="utility:TranslatableString" key="Property.connectionFactoryName" bundleName="ComIbmJMSClientOutput" pluginId="com.ibm.etools.mft.ibmnodes"/>
+                    <propertyDescriptor groupName="Group.JMS_Connection" propertyEditor="com.ibm.etools.mft.ibmnodes.editors.jms.InitialContextFactoryPropertyEditor" configurable="true" describedAttribute="Property.initialContextFactory">
+                      <propertyName xmi:type="utility:TranslatableString" key="Property.initialContextFactory" bundleName="ComIbmJMSClientOutput" pluginId="com.ibm.etools.mft.ibmnodes"/>
+                      <propertyDescriptor groupName="Group.JMS_Connection" propertyEditor="com.ibm.etools.mft.ibmnodes.editors.jms.JMSProviderNameEditor" describedAttribute="Property.jmsProviderName">
+                        <propertyName xmi:type="utility:TranslatableString" key="Property.jmsProviderName" bundleName="ComIbmJMSClientOutput" pluginId="com.ibm.etools.mft.ibmnodes"/>
+                        <propertyDescriptor groupName="Group.JMS_Connection" configurable="true" describedAttribute="Property.locationJndiBindings">
+                          <propertyName xmi:type="utility:TranslatableString" key="Property.locationJndiBindings" bundleName="ComIbmJMSClientOutput" pluginId="com.ibm.etools.mft.ibmnodes"/>
+                          <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.PublishPayload">
+                            <propertyName xmi:type="utility:TranslatableString" key="Property.PublishPayload" bundleName="IC0092_B2B_Common_Publish2JMS" pluginId="IC0092_B2B_Common_Lib"/>
+                          </propertyDescriptor>
+                        </propertyDescriptor>
+                      </propertyDescriptor>
+                    </propertyDescriptor>
+                  </propertyDescriptor>
+                </propertyDescriptor>
+              </propertyDescriptor>
+            </propertyDescriptor>
+          </propertyDescriptor>
+        </propertyDescriptor>
+      </propertyDescriptor>
+    </propertyOrganizer>
+    <attributeLinks promotedAttribute="Property.topic" overriddenNodes="FCMComposite_1_1">
+      <overriddenAttribute href="ComIbmJMSClientOutput.msgnode#Property.topic"/>
+    </attributeLinks>
+    <attributeLinks promotedAttribute="Property.connectionFactoryName" overriddenNodes="FCMComposite_1_1">
+      <overriddenAttribute href="ComIbmJMSClientOutput.msgnode#Property.connectionFactoryName"/>
+    </attributeLinks>
+    <attributeLinks promotedAttribute="Property.initialContextFactory" overriddenNodes="FCMComposite_1_1">
+      <overriddenAttribute href="ComIbmJMSClientOutput.msgnode#Property.initialContextFactory"/>
+    </attributeLinks>
+    <attributeLinks promotedAttribute="Property.jmsProviderName" overriddenNodes="FCMComposite_1_1">
+      <overriddenAttribute href="ComIbmJMSClientOutput.msgnode#Property.jmsProviderName"/>
+    </attributeLinks>
+    <attributeLinks promotedAttribute="Property.locationJndiBindings" overriddenNodes="FCMComposite_1_1">
+      <overriddenAttribute href="ComIbmJMSClientOutput.msgnode#Property.locationJndiBindings"/>
+    </attributeLinks>
+    <stickyBoard/>
+  </eClassifiers>
+</ecore:EPackage>
