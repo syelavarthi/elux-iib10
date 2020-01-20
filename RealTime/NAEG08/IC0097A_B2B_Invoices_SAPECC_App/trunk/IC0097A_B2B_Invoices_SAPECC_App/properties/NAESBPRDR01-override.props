@@ -1,8 +1,0 @@
-IC0097A_InvoiceSearch#additionalInstances				= 2
-IC0097A_InvoiceSearch#InvListCompute.dataSource 		= REPORTSDB
-IC0097A_InvoiceSearch#DocuLynx_CustName 				= apiuser
-IC0097A_InvoiceSearch#DocuLynx_GroupName 				= apiuser
-IC0097A_InvoiceSearch#DocuLynx_Password 				= apiuser
-IC0097A_InvoiceSearch#DocuLynx_URL 						= https://ehpna.documentportal.com/servlet/api
-IC0097A_InvoiceSearch#DocuLynx_UserName 				= apiuser
-IC0097A_InvoiceSearch#DocuLynx_VPath 					= https://ehpna.documentportal.com
