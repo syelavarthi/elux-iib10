@@ -1,0 +1,332 @@
+
+DECLARE DocuLynx_UserName EXTERNAL CHARACTER '';
+DECLARE DocuLynx_Password EXTERNAL CHARACTER '';
+DECLARE DocuLynx_CustName EXTERNAL CHARACTER '';
+DECLARE DocuLynx_GroupName EXTERNAL CHARACTER '';
+DECLARE DocuLynx_URL EXTERNAL CHARACTER '';
+DECLARE DocuLynx_VPath EXTERNAL CHARACTER '';
+
+DECLARE invns NAMESPACE 'http://congo.electrolux.com/invoice/query';
+
+CREATE COMPUTE MODULE IC0097A_InvoiceSearch_InvListCompute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		DECLARE l_cInvoiceNumber, l_cOrderNumber, l_cSerialNumber, l_cSalesOrg, l_cSoldTo, l_cShipTo, l_cPONumber, l_cInvoiceDateFrom, l_cInvoiceDateTo CHARACTER;
+		
+		--
+		FOR n_rQueryEx AS InputRoot.XMLNSC.invns:InvoiceListRequest.QueryExpression[] DO
+			
+			CASE UCASE(n_rQueryEx.QueryFieldName) 				
+			WHEN 'INVOICENUMBER' THEN
+				SET l_cInvoiceNumber = n_rQueryEx.QueryValue1;
+			WHEN 'ORDERNUMBER' THEN
+				SET l_cOrderNumber = n_rQueryEx.QueryValue1;
+			WHEN 'SERIALNUMBER' THEN
+				SET l_cSerialNumber = n_rQueryEx.QueryValue1;
+			WHEN 'SALESORG' THEN
+				SET l_cSalesOrg = n_rQueryEx.QueryValue1;
+			WHEN 'SOLDTO' THEN
+				SET l_cSoldTo = n_rQueryEx.QueryValue1;
+			WHEN 'SHIPTO' THEN
+				SET l_cShipTo = n_rQueryEx.QueryValue1;
+			WHEN 'PONUMBER' THEN
+				SET l_cPONumber = n_rQueryEx.QueryValue1;
+			WHEN 'INVOICEDATE' THEN
+				SET l_cInvoiceDateFrom = n_rQueryEx.QueryValue1;			
+				SET l_cInvoiceDateTo = n_rQueryEx.QueryValue2;
+			ELSE
+				SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseHeader.Status 		= 'FAILURE';
+				SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseHeader.Description = 'Invalid criteria for Inventory requests';
+				
+				RETURN TRUE;
+			END CASE;
+			
+		END FOR;
+		
+		-- Call the Database Stored Procedure, to get the list of Orders, for the supplied criteria
+		CREATE FIELD Environment.Variables;
+		DECLARE l_rEnvVar REFERENCE TO Environment.Variables;
+		
+--		SET l_rEnvVar.NoCnt[] = PASSTHRU('SET NOCOUNT ON');
+		CALL GetInvoices(l_cInvoiceNumber, l_cOrderNumber, l_cSerialNumber, l_cSoldTo, l_cShipTo, 
+				l_cInvoiceDateFrom, l_cInvoiceDateTo, l_cPONumber, l_cSalesOrg, l_rEnvVar.InvoiceList.Invoice[]);
+				--CAST(l_cInvoiceDateFrom AS TIMESTAMP FORMAT 'yyyy-MM-dd'), CAST(l_cInvoiceDateTo AS TIMESTAMP FORMAT 'yyyy-MM-dd'), l_cPONumber, l_cSalesOrg, l_rEnvVar.InvoiceList.Invoice[]);
+		
+		IF NOT EXISTS(l_rEnvVar.InvoiceList.Invoice[]) THEN
+			SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseHeader.Status = 'FAILURE';
+			SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseHeader.Description 	= 'No matching Invoices found for supplied criteria';
+			
+			RETURN TRUE;
+		ELSE
+			-- For CA orders send RT_EDS_CanadaInv as RetrievalName. But Hybris is ignoring this field
+			DECLARE l_cRetrievalName CHARACTER 'RT_EDS_InvX';
+			IF STARTSWITH(l_cSalesOrg, 'CA') THEN
+				SET l_cRetrievalName = 'RT_EDS_CanadaInv';
+			END IF;
+				
+			SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseHeader.Status 	= 'SUCCESS';
+		
+			SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.RetrievalType.RetrievalName = l_cRetrievalName;
+			SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.RetrievalType.RetrievalLabel = 'EDW Invoices';
+			
+			SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexField[1].FieldName.(XMLNSC.Attribute)FieldID = 'F1';
+			SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexField[1].FieldName = 'RetrievalTypeName';
+			SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexField[1].FieldLabel = 'RetrievalTypeName';
+			
+			SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexField[2].FieldName.(XMLNSC.Attribute)FieldID = 'F2';
+			SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexField[2].FieldName = 'InvoiceNumber';
+			SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexField[2].FieldLabel = 'Invoice Number';
+			
+			SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexField[3].FieldName.(XMLNSC.Attribute)FieldID = 'F3';
+			SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexField[3].FieldName = 'SoldTo';
+			SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexField[3].FieldLabel = 'Customer Number';
+			
+			SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexField[4].FieldName.(XMLNSC.Attribute)FieldID = 'F4';
+			SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexField[4].FieldName = 'OrderNumber';
+			SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexField[4].FieldLabel = 'Order Number';
+			
+			SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexField[5].FieldName.(XMLNSC.Attribute)FieldID = 'F5';
+			SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexField[5].FieldName = 'PONumber';
+			SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexField[5].FieldLabel = 'PO Number';
+			
+			SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexField[6].FieldName.(XMLNSC.Attribute)FieldID = 'F6';
+			SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexField[6].FieldName = 'BOLNumber';
+			SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexField[6].FieldLabel = 'Bill Of Lading Number';
+			
+			SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexField[7].FieldName.(XMLNSC.Attribute)FieldID = 'F7';
+			SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexField[7].FieldName = 'InvoiceDate';
+			SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexField[7].FieldLabel = 'Invoice Date';
+			
+			SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexField[8].FieldName.(XMLNSC.Attribute)FieldID = 'F8';
+			SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexField[8].FieldName = 'InvoiceAmount';
+			SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexField[8].FieldLabel = 'Invoice Amount';
+			
+			DECLARE i INTEGER 1;
+			FOR n_rInvoice AS l_rEnvVar.InvoiceList.Invoice[] DO
+				SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexSet[i].DocDescriptor.(XMLNSC.Attribute)Value = 'RT_EDS_InvX';
+				SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexSet[i].IndexValue[1].(XMLNSC.Attribute)FieldIDRef	=	'F1';
+				SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexSet[i].IndexValue[1]	=	'EDW Invoices';
+				
+				SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexSet[i].IndexValue[2].(XMLNSC.Attribute)FieldIDRef	=	'F2';
+				SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexSet[i].IndexValue[2]	=	COALESCE(TRIM(FIELDVALUE(n_rInvoice.INVOICE_NO)), '');
+				
+				SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexSet[i].IndexValue[3].(XMLNSC.Attribute)FieldIDRef	=	'F3';
+				SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexSet[i].IndexValue[3]	=	COALESCE(TRIM(FIELDVALUE(n_rInvoice.SOLD_TO_CUSTOMER_NO)), '');
+				
+				SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexSet[i].IndexValue[4].(XMLNSC.Attribute)FieldIDRef	=	'F4';
+				SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexSet[i].IndexValue[4]	=	COALESCE(TRIM(FIELDVALUE(n_rInvoice.ORDER_NO)), '');
+				
+				SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexSet[i].IndexValue[5].(XMLNSC.Attribute)FieldIDRef	=	'F5';
+				SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexSet[i].IndexValue[5]	=	COALESCE(TRIM(FIELDVALUE(n_rInvoice.CUSTOMER_PO_NO)), '');
+				
+				SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexSet[i].IndexValue[6].(XMLNSC.Attribute)FieldIDRef	=	'F6';
+				SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexSet[i].IndexValue[6]	=	COALESCE(TRIM(FIELDVALUE(n_rInvoice.SHIPPER_NO)), '');
+				
+				SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexSet[i].IndexValue[7].(XMLNSC.Attribute)FieldIDRef	=	'F7';
+				SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexSet[i].IndexValue[7]	=	COALESCE(FIELDVALUE(n_rInvoice.INVOICE_DATE), '');
+				
+				SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexSet[i].IndexValue[8].(XMLNSC.Attribute)FieldIDRef	=	'F8';
+				SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseDetail.HitlistRows.IndexSet[i].IndexValue[8]	=	COALESCE(FIELDVALUE(n_rInvoice.INVOICE_AMOUNT), '');
+				
+				SET i = i + 1;
+			END FOR;
+			
+		END IF;
+		
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE GetInvoices(IN InvoiceNumber CHARACTER, IN OrderNumber CHARACTER, IN SerialNumber CHARACTER, IN SoldTo CHARACTER, IN ShipTo CHARACTER, 
+				IN Invoice_Start_Date CHARACTER, IN Invoice_End_Date CHARACTER, IN PONumber CHARACTER, IN SalesOrg CHARACTER)
+	LANGUAGE DATABASE
+	DYNAMIC RESULT SETS 1
+	EXTERNAL NAME "dbo.usp_ECOMM_INVOICE_HISTORY_SAP";
+	
+END MODULE;
+
+
+CREATE COMPUTE MODULE IC0097A_InvoiceSearch_InvDocReqMapping
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+	
+		DECLARE docRequset REFERENCE TO InputRoot.XMLNSC.invns:InvoiceDocumentRequest;
+		
+		DECLARE l_rOut, l_rOutQueryEx REFERENCE TO OutputRoot;
+		
+		CREATE FIELD OutputRoot.XMLNSC.docHarborWebApi.HitlistRequest.HitlistQuery AS l_rOut;
+		
+		SET l_rOut.UserName = DocuLynx_UserName;
+		SET l_rOut.CustomerName = DocuLynx_CustName;
+		SET l_rOut.GroupName = DocuLynx_GroupName;
+		SET l_rOut.RetrievalName = 'RT_EDS_InvX';
+		
+		FOR n_rQueryEx AS docRequset.QueryExpression[] DO
+			
+			CASE UCASE(TRIM(n_rQueryEx.QueryFieldName))
+				
+			WHEN 'INVOICENUMBER' THEN
+				
+				CREATE LASTCHILD OF l_rOut AS l_rOutQueryEx NAME 'QueryExpression';
+				SET l_rOutQueryEx.QueryFieldName = 'IF_EDS_InvNo';
+				SET l_rOutQueryEx.QueryOperator.(XMLNSC.Attribute)Operator = FIELDVALUE(n_rQueryEx.QueryOperator.(XMLNSC.Attribute)Operator);
+				SET l_rOutQueryEx.QueryValue1 = n_rQueryEx.QueryValue1;
+				
+			WHEN 'INVOICEDATE' THEN
+				
+				CREATE LASTCHILD OF l_rOut AS l_rOutQueryEx NAME 'QueryExpression';
+				SET l_rOutQueryEx.QueryFieldName = 'IF_EDS_InvoiceDate';
+				SET l_rOutQueryEx.QueryOperator.(XMLNSC.Attribute)Operator = FIELDVALUE(n_rQueryEx.QueryOperator.(XMLNSC.Attribute)Operator);
+				SET l_rOutQueryEx.QueryValue1 = CAST(CAST(n_rQueryEx.QueryValue1 AS DATE FORMAT 'yyyy-MM-dd') AS CHARACTER FORMAT 'MM/dd/yyyy');
+				SET l_rOutQueryEx.QueryValue2 = CAST(CAST(n_rQueryEx.QueryValue2 AS DATE FORMAT 'yyyy-MM-dd') AS CHARACTER FORMAT 'MM/dd/yyyy');
+			
+			WHEN 'SALESORG' THEN
+				
+				SET Environment.Variables.CanTryCA = FALSE;
+				-- For Canada Orders send diffeent RetrievalName
+				IF STARTSWITH(n_rQueryEx.QueryValue1, 'CA') THEN
+					SET l_rOut.RetrievalName = 'RT_EDS_CanadaInv';
+				END IF;
+				
+			END CASE;
+			
+		END FOR;
+		
+		SET l_rOut.SearchMode.(XMLNSC.Attribute)Mode	= 'All';
+		SET l_rOut.GetNoShows.(XMLNSC.Attribute)Value	= 'True';
+		SET l_rOut.MaxRows.(XMLNSC.Attribute)Value	= '10';
+		SET l_rOut.UseDisplayFormat.(XMLNSC.Attribute)Value	= 'True';
+		SET l_rOut.UseFullDocDescriptor.(XMLNSC.Attribute)Value	= 'False';
+		SET l_rOut.SortBy.SortFieldName	= 'IF_EDS_InvNo';
+		SET l_rOut.SortBy.SortOrder	= '1';
+		
+		-- Send for US and then try for CA if no invoice in US. This is temporary solution until Hybris passed SalesOrg
+		PROPAGATE TO TERMINAL 'out' DELETE NONE;
+		
+		-- CA invoice search
+		SET OutputRoot.XMLNSC.docHarborWebApi.HitlistRequest.HitlistQuery.RetrievalName = 'RT_EDS_CanadaInv';
+		SET Environment.Variables.CanTryCA = FALSE;
+		
+		RETURN TRUE;
+
+	END;
+	
+END MODULE;
+
+
+CREATE COMPUTE MODULE IC0097A_InvoiceSearch_InvDocResMapping
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		CREATE FIELD Environment.Variables.DocuLynxRes;
+		CREATE LASTCHILD OF Environment.Variables.DocuLynxRes DOMAIN 'XMLNSC' PARSE(InputRoot.BLOB.BLOB CCSID 1208);
+		DECLARE l_rDocuLynxRes REFERENCE TO Environment.Variables.DocuLynxRes.XMLNSC.docHarborWebApi;
+		
+		-- Searching for invoice 
+		IF EXISTS(l_rDocuLynxRes.HitlistResponse[]) THEN
+			
+			IF EXISTS(l_rDocuLynxRes.HitlistResponse.NoRows[]) THEN
+				
+				-- If no invoice in US then try with CA
+				IF Environment.Variables.CanTryCA IS NULL OR Environment.Variables.CanTryCA = TRUE THEN
+					SET Environment.Variables.CanTryCA = TRUE;
+					SET Environment.Variables.DocuLynxRes = NULL;
+					RETURN FALSE;
+				END IF;
+				
+				SET OutputRoot.XMLNSC.invns:InvoiceDocumentResponse.ResponseHeader.Status = 'FAILURE';
+				SET OutputRoot.XMLNSC.invns:InvoiceDocumentResponse.ResponseHeader.Description = 'No invoice exists';
+				
+				RETURN TRUE;
+				
+			ELSE
+				DECLARE l_rOutDocReq REFERENCE TO OutputRoot;
+				CREATE FIELD OutputRoot.XMLNSC.docHarborWebApi.DocumentRequest AS l_rOutDocReq;
+				
+				SET l_rOutDocReq.UserName 		= DocuLynx_UserName;
+				SET l_rOutDocReq.CustomerName 	= DocuLynx_CustName;
+				SET l_rOutDocReq.GroupName 		= DocuLynx_GroupName;
+				SET l_rOutDocReq.RetrievalName	= FIELDVALUE(l_rDocuLynxRes.HitlistResponse.HitlistRows.RetrievalType.RetrievalName); --'RT_EDS_InvX' or 'RT_EDS_CanadaInv'
+				 
+				SET l_rOutDocReq.DocDescriptor.(XMLNSC.Attribute)Value			= FIELDVALUE(l_rDocuLynxRes.HitlistResponse.HitlistRows.IndexSet.DocDescriptor.(XMLNSC.Attribute)Value);
+				 
+				SET l_rOutDocReq.DisplayOption.(XMLNSC.Attribute)Option			= 'AUTO';
+			 	SET l_rOutDocReq.GenerateAnnotations.(XMLNSC.Attribute)Value	= 'True';
+				SET l_rOutDocReq.GenerateBookmarks.(XMLNSC.Attribute)Value		= 'True';
+				SET l_rOutDocReq.Linearize.(XMLNSC.Attribute)Value				= 'False';
+				SET l_rOutDocReq.UsePreprintedForm.(XMLNSC.Attribute)Value		= 'True';
+				 
+	--			IF FIELDVALUE(docRequset.AcrobatVersion.Value) IS NOT NULL THEN
+	--			 SET l_rOutDocReq.AcrobatVersion.(XMLNSC.Attribute)Value			= docRequset.AcrobatVersion.Value;
+	--			END IF;
+	--			 
+	--			SET l_rOutDocReq.AuditText										= docRequset.AuditText;
+	--			 
+	--			SET l_rOutDocReq.PrivateData										= docRequset.PrivateData;			 
+	--			 
+	--			IF FIELDVALUE(docRequset.RequestTimeout.Seconds) IS NOT NULL THEN			 	
+	--			 SET l_rOutDocReq.RequestTimeout.(XMLNSC.Attribute)Seconds			= docRequset.RequestTimeout.Seconds;
+	--			END IF;
+				 
+				SET l_rOutDocReq.ReturnFilename.LeaveOnDisk.(XMLNSC.Attribute)Minutes	= '30';
+				 
+				DELETE FIELD Environment.Variables.DocuLynxRes; 
+				PROPAGATE TO TERMINAL 'out1';
+			END IF;
+			
+		ELSEIF EXISTS(l_rDocuLynxRes.DocumentResponse[]) THEN
+			
+			IF EXISTS(l_rDocuLynxRes.DocumentResponse.Error[]) THEN
+				
+				SET OutputRoot.XMLNSC.invns:InvoiceDocumentResponse.ResponseHeader.Status = 'FAILURE';
+				SET OutputRoot.XMLNSC.invns:InvoiceDocumentResponse.ResponseHeader.Description = l_rDocuLynxRes.DocumentResponse.Error;
+				
+				RETURN TRUE;
+				
+			ELSE
+		
+				SET OutputRoot.XMLNSC.invns:InvoiceDocumentResponse.ResponseHeader.Status = 'SUCCESS';
+				
+				SET OutputRoot.XMLNSC.invns:InvoiceDocumentResponse.ResponseDetail.VirtualPath	=	DocuLynx_VPath || l_rDocuLynxRes.DocumentResponse.VirtualPath;
+				SET OutputRoot.XMLNSC.invns:InvoiceDocumentResponse.ResponseDetail.FileName	=	l_rDocuLynxRes.DocumentResponse.FileName;
+				SET OutputRoot.XMLNSC.invns:InvoiceDocumentResponse.ResponseDetail.FileSizeBytes	=	l_rDocuLynxRes.DocumentResponse.FileSizeBytes;				
+				
+				RETURN TRUE;
+			END IF;
+			
+		ELSE 
+						
+			SET OutputRoot.XMLNSC.invns:InvoiceDocumentResponse.ResponseHeader.Status = 'FAILURE';
+			SET OutputRoot.XMLNSC.invns:InvoiceDocumentResponse.ResponseHeader.Description = COALESCE(l_rDocuLynxRes.Error, 'No invoice document exists');
+			
+			RETURN TRUE;
+		END IF;
+		
+		RETURN FALSE;
+	END;
+
+END MODULE;
+
+
+CREATE COMPUTE MODULE IC0097A_InvoiceSearch_ErrCompute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		IF EXISTS(InputRoot.XMLNSC.invns:InvoiceListRequest[]) OR EXISTS(InputRoot.SOAP.Body.invns:InvoiceListRequest[]) THEN
+			
+			SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseHeader.Status = 'FAILURE';
+			SET OutputRoot.XMLNSC.invns:InvoiceListResponse.ResponseHeader.Description 	= 'Internal Server Error';
+		
+		ELSE	
+			SET OutputRoot.XMLNSC.invns:InvoiceDocumentResponse.ResponseHeader.Status = 'FAILURE';
+			SET OutputRoot.XMLNSC.invns:InvoiceDocumentResponse.ResponseHeader.Description = 'Internal Server Error';
+			
+		END IF;
+				
+		RETURN TRUE;
+	END;
+
+	
+END MODULE;
+
+

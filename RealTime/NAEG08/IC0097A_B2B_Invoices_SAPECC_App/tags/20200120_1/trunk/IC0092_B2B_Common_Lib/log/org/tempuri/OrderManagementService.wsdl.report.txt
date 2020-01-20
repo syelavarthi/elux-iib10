@@ -1,0 +1,197 @@
+
+
+Importing file: \OrderManagementService.wsdl
+
+
+The following is a list of WS-I warning messages found when importing:
+XSD: The location 'http://broomservice-uat.electrolux-na.com/OrderManagementService.svc?xsd=xsd1' has not been resolved because the import is unused, Line: 1, Column: 1
+XSD: There is no xmlns declaration for namespace 'http://schemas.microsoft.com/2003/10/Serialization/', Line: 1, Column: 1
+XSD: The location 'http://broomservice-uat.electrolux-na.com/OrderManagementService.svc?xsd=xsd2' has not been resolved because the import is unused, Line: 1, Column: 1
+XSD: There is no xmlns declaration for namespace 'Electrolux.Architecture.Framework.Common', Line: 1, Column: 1
+XSD: The location 'http://broomservice-uat.electrolux-na.com/OrderManagementService.svc?xsd=xsd3' has not been resolved because the import is unused, Line: 1, Column: 1
+XSD: There is no xmlns declaration for namespace 'http://schemas.datacontract.org/2004/07/Electrolux.ContractDirect.BROOM.Common', Line: 1, Column: 1
+XSD: The location 'http://broomservice-uat.electrolux-na.com/OrderManagementService.svc?xsd=xsd4' has not been resolved because the import is unused, Line: 1, Column: 1
+XSD: There is no xmlns declaration for namespace 'http://schemas.datacontract.org/2004/07/Electrolux.ContractDirect.BROOM.Common.Business', Line: 1, Column: 1
+XSD: The location 'http://broomservice-uat.electrolux-na.com/OrderManagementService.svc?xsd=xsd5' has not been resolved because the import is unused, Line: 1, Column: 1
+XSD: There is no xmlns declaration for namespace 'http://schemas.datacontract.org/2004/07/Electrolux.ContractDirect.BROOM.Common.InvoiceTemplates', Line: 1, Column: 1
+XSD: The location 'http://broomservice-uat.electrolux-na.com/OrderManagementService.svc?xsd=xsd6' has not been resolved because the import is unused, Line: 1, Column: 1
+XSD: There is no xmlns declaration for namespace 'http://schemas.microsoft.com/2003/10/Serialization/Arrays', Line: 1, Column: 1
+
+
+The WSDL import will proceed with bindings basicHttpService.
+Creating wsdl schema document for RemoteFiles/OrderManagementService.xsd.
+Parsing wsdl binding {http://tempuri.org/}basicHttpService.
+Parsing wsdl binding input GetSubstitutionSKU.
+Parsing wsdl binding output GetSubstitutionSKU.
+Parsing wsdl binding input SaveSubstitutionHierarchy.
+Parsing wsdl binding output SaveSubstitutionHierarchy.
+Parsing wsdl binding input DeleteSubstitutionSKU.
+Parsing wsdl binding output DeleteSubstitutionSKU.
+Parsing wsdl binding input RetrieveStatementPDF.
+Parsing wsdl binding output RetrieveStatementPDF.
+Parsing wsdl binding input IsBroomInvoice.
+Parsing wsdl binding output IsBroomInvoice.
+Parsing wsdl binding input GetBroomOrders.
+Parsing wsdl binding output GetBroomOrders.
+Parsing wsdl binding input GetParentOrderHeaderData.
+Parsing wsdl binding output GetParentOrderHeaderData.
+Parsing wsdl binding input GetParentOrderLineItemData.
+Parsing wsdl binding output GetParentOrderLineItemData.
+Parsing wsdl binding input GetInvoiceList.
+Parsing wsdl binding output GetInvoiceList.
+Parsing wsdl binding input GetOrderHistoryStatus.
+Parsing wsdl binding output GetOrderHistoryStatus.
+Parsing wsdl binding input AddOrderHistoryStatus.
+Parsing wsdl binding output AddOrderHistoryStatus.
+Parsing wsdl binding input GetAllOrderStatusCodeTypes.
+Parsing wsdl binding output GetAllOrderStatusCodeTypes.
+Parsing wsdl binding input SaveOrderStatusCodeType.
+Parsing wsdl binding output SaveOrderStatusCodeType.
+Parsing wsdl binding input GetOrderHeaderComments.
+Parsing wsdl binding output GetOrderHeaderComments.
+Parsing wsdl binding input GetBusinessHolidays.
+Parsing wsdl binding output GetBusinessHolidays.
+Parsing wsdl binding input GetFirstAvailableDeliveryDate.
+Parsing wsdl binding output GetFirstAvailableDeliveryDate.
+Parsing wsdl binding input GetEstimatedShipDate.
+Parsing wsdl binding output GetEstimatedShipDate.
+Parsing wsdl binding input GetEstimatedDeliveryDate.
+Parsing wsdl binding output GetEstimatedDeliveryDate.
+Parsing wsdl binding input GetLocationsByCustomer.
+Parsing wsdl binding output GetLocationsByCustomer.
+Parsing wsdl binding input GetBidsByLocation.
+Parsing wsdl binding output GetBidsByLocation.
+Parsing wsdl binding input GetLooseBidItems.
+Parsing wsdl binding output GetLooseBidItems.
+Parsing wsdl binding input GetNonBidSKUs.
+Parsing wsdl binding output GetNonBidSKUs.
+Parsing wsdl binding input GetOrderTypes.
+Parsing wsdl binding output GetOrderTypes.
+Parsing wsdl binding input GetOrderHoldCodes.
+Parsing wsdl binding output GetOrderHoldCodes.
+Parsing wsdl binding input GetOrderReturnReasonCodes.
+Parsing wsdl binding output GetOrderReturnReasonCodes.
+Parsing wsdl binding input GetEDCs.
+Parsing wsdl binding output GetEDCs.
+Parsing wsdl binding input GetWarehouses.
+Parsing wsdl binding output GetWarehouses.
+Parsing wsdl binding input GetShipmentLeadTimes.
+Parsing wsdl binding output GetShipmentLeadTimes.
+Parsing wsdl binding input GetCarriers.
+Parsing wsdl binding output GetCarriers.
+Parsing wsdl binding input GetPackagesByBid.
+Parsing wsdl binding output GetPackagesByBid.
+Parsing wsdl binding input GetSKUsByBid.
+Parsing wsdl binding output GetSKUsByBid.
+Parsing wsdl binding input GetSKUsByPackage.
+Parsing wsdl binding output GetSKUsByPackage.
+Parsing wsdl binding input SaveOrderType.
+Parsing wsdl binding output SaveOrderType.
+Parsing wsdl binding input SaveCarrier.
+Parsing wsdl binding output SaveCarrier.
+Parsing wsdl binding input GetSKU.
+Parsing wsdl binding output GetSKU.
+Parsing wsdl binding input SubmitOrder.
+Parsing wsdl binding output SubmitOrder.
+Parsing wsdl binding input SubmitOrderWithNotes.
+Parsing wsdl binding output SubmitOrderWithNotes.
+Parsing wsdl binding input SubmitClaim.
+Parsing wsdl binding output SubmitClaim.
+Parsing wsdl binding input UpdateOrderStatus.
+Parsing wsdl binding output UpdateOrderStatus.
+Parsing wsdl binding input GetOrder.
+Parsing wsdl binding output GetOrder.
+Parsing wsdl binding input GetOrderHeader.
+Parsing wsdl binding output GetOrderHeader.
+Parsing wsdl binding input GetConsolidatedOrderByFocusReference.
+Parsing wsdl binding output GetConsolidatedOrderByFocusReference.
+Parsing wsdl binding input GetConsolidatedOrderByBroomReference.
+Parsing wsdl binding output GetConsolidatedOrderByBroomReference.
+Parsing wsdl binding input IsOrderEligibleForStatementGeneration.
+Parsing wsdl binding output IsOrderEligibleForStatementGeneration.
+Parsing wsdl binding input ValidateSKU.
+Parsing wsdl binding output ValidateSKU.
+Parsing wsdl binding input SearchOrders.
+Parsing wsdl binding output SearchOrders.
+Parsing wsdl binding input GetSelectCount.
+Parsing wsdl binding output GetSelectCount.
+Parsing wsdl binding input GetOrderItemInventoryForSelectedWarehouse.
+Parsing wsdl binding output GetOrderItemInventoryForSelectedWarehouse.
+Parsing wsdl binding input GetBusinessHolidayCount.
+Parsing wsdl binding output GetBusinessHolidayCount.
+Parsing wsdl binding input GetSubstitutionHierarchy.
+Parsing wsdl binding output GetSubstitutionHierarchy.
+Processing doc style for operation GetSubstitutionSKU.
+Processing doc style for operation SaveSubstitutionHierarchy.
+Processing doc style for operation DeleteSubstitutionSKU.
+Processing doc style for operation RetrieveStatementPDF.
+Processing doc style for operation IsBroomInvoice.
+Processing doc style for operation GetBroomOrders.
+Processing doc style for operation GetParentOrderHeaderData.
+Processing doc style for operation GetParentOrderLineItemData.
+Processing doc style for operation GetInvoiceList.
+Processing doc style for operation GetOrderHistoryStatus.
+Processing doc style for operation AddOrderHistoryStatus.
+Processing doc style for operation GetAllOrderStatusCodeTypes.
+Processing doc style for operation SaveOrderStatusCodeType.
+Processing doc style for operation GetOrderHeaderComments.
+Processing doc style for operation GetBusinessHolidays.
+Processing doc style for operation GetFirstAvailableDeliveryDate.
+Processing doc style for operation GetEstimatedShipDate.
+Processing doc style for operation GetEstimatedDeliveryDate.
+Processing doc style for operation GetLocationsByCustomer.
+Processing doc style for operation GetBidsByLocation.
+Processing doc style for operation GetLooseBidItems.
+Processing doc style for operation GetNonBidSKUs.
+Processing doc style for operation GetOrderTypes.
+Processing doc style for operation GetOrderHoldCodes.
+Processing doc style for operation GetOrderReturnReasonCodes.
+Processing doc style for operation GetEDCs.
+Processing doc style for operation GetWarehouses.
+Processing doc style for operation GetShipmentLeadTimes.
+Processing doc style for operation GetCarriers.
+Processing doc style for operation GetPackagesByBid.
+Processing doc style for operation GetSKUsByBid.
+Processing doc style for operation GetSKUsByPackage.
+Processing doc style for operation SaveOrderType.
+Processing doc style for operation SaveCarrier.
+Processing doc style for operation GetSKU.
+Processing doc style for operation SubmitOrder.
+Processing doc style for operation SubmitOrderWithNotes.
+Processing doc style for operation SubmitClaim.
+Processing doc style for operation UpdateOrderStatus.
+Processing doc style for operation GetOrder.
+Processing doc style for operation GetOrderHeader.
+Processing doc style for operation GetConsolidatedOrderByFocusReference.
+Processing doc style for operation GetConsolidatedOrderByBroomReference.
+Processing doc style for operation IsOrderEligibleForStatementGeneration.
+Processing doc style for operation ValidateSKU.
+Processing doc style for operation SearchOrders.
+Processing doc style for operation GetSelectCount.
+Processing doc style for operation GetOrderItemInventoryForSelectedWarehouse.
+Processing doc style for operation GetBusinessHolidayCount.
+Processing doc style for operation GetSubstitutionHierarchy.
+Populating WSDL schema RemoteFiles/OrderManagementService.xsd.
+Removing unnecessary import statement with namespace http://schemas.microsoft.com/2003/10/Serialization/ from schema RemoteFiles/OrderManagementService_InlineSchema1.xsd.  This statement was not resolved and is never used.
+Removing unnecessary import statement with namespace Electrolux.Architecture.Framework.Common from schema RemoteFiles/OrderManagementService_InlineSchema1.xsd.  This statement was not resolved and is never used.
+Removing unnecessary import statement with namespace http://schemas.datacontract.org/2004/07/Electrolux.ContractDirect.BROOM.Common from schema RemoteFiles/OrderManagementService_InlineSchema1.xsd.  This statement was not resolved and is never used.
+Removing unnecessary import statement with namespace http://schemas.datacontract.org/2004/07/Electrolux.ContractDirect.BROOM.Common.Business from schema RemoteFiles/OrderManagementService_InlineSchema1.xsd.  This statement was not resolved and is never used.
+Removing unnecessary import statement with namespace http://schemas.datacontract.org/2004/07/Electrolux.ContractDirect.BROOM.Common.InvoiceTemplates from schema RemoteFiles/OrderManagementService_InlineSchema1.xsd.  This statement was not resolved and is never used.
+Removing unnecessary import statement with namespace http://schemas.microsoft.com/2003/10/Serialization/Arrays from schema RemoteFiles/OrderManagementService_InlineSchema1.xsd.  This statement was not resolved and is never used.
+Creating file RemoteFiles/OrderManagementService.xsd in the workspace.
+Creating file /IC0092_B2B_Common_Lib/xsd_xsd0.xsd in the workspace.
+Creating file /IC0092_B2B_Common_Lib/xsd_xsd2.xsd in the workspace.
+Creating file /IC0092_B2B_Common_Lib/xsd_xsd3.xsd in the workspace.
+Creating file /IC0092_B2B_Common_Lib/xsd_xsd4.xsd in the workspace.
+Creating file /IC0092_B2B_Common_Lib/xsd_xsd1.xsd in the workspace.
+Creating file /IC0092_B2B_Common_Lib/xsd_xsd6.xsd in the workspace.
+Creating file /IC0092_B2B_Common_Lib/xsd_xsd5.xsd in the workspace.
+Copying source WSDL OrderManagementService.svc?WSDL to OrderManagementService.wsdl.
+
+Elapsed time processing this message definition file: 1.023 seconds
+Number of warnings for this message definition file: 0
+
+
+Number of files processed: 1
+
+

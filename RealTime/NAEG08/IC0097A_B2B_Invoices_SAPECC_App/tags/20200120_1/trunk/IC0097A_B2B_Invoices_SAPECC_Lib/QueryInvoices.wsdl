@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="InvoiceInfo" targetNamespace="http://congo.electrolux.com/invoice/query" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://congo.electrolux.com/invoice/query" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:documentation>
+    <wsdl:appinfo source="WMQI_APPINFO">
+      <MRWSDLAppInfo imported="true">
+        <binding hasEncoding="false" imported="true" name="InvoiceInfo_SOAP_HTTP_Binding" originalBindingStyle="document"/>
+      </MRWSDLAppInfo>
+    </wsdl:appinfo>
+  </wsdl:documentation>
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://congo.electrolux.com/invoice/query">
+<xsd:include schemaLocation="QueryInvoices.xsd"/>
+    </xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="GetInvoiceList">
+		<wsdl:part element="tns:InvoiceListRequest" name="GetInvoiceList"/>
+	</wsdl:message>
+	<wsdl:message name="GetInvoiceListResponse">
+		<wsdl:part element="tns:InvoiceListResponse" name="GetInvoiceListResponse"/>
+	</wsdl:message>
+	<wsdl:message name="GetInvoiceFile">
+		<wsdl:part element="tns:InvoiceDocumentRequest" name="GetInvoiceFile"/>
+	</wsdl:message>
+	<wsdl:message name="GetInvoiceFileResponse">
+		<wsdl:part element="tns:InvoiceDocumentResponse" name="GetInvoiceFileResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="InvoiceInfo_Port">
+		<wsdl:operation name="GetInvoiceList">
+			<wsdl:input message="tns:GetInvoiceList"/>
+			<wsdl:output message="tns:GetInvoiceListResponse"/>
+		</wsdl:operation>		<wsdl:operation name="GetInvoiceFile">
+			<wsdl:input message="tns:GetInvoiceFile"/>
+			<wsdl:output message="tns:GetInvoiceFileResponse"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="InvoiceInfo_SOAP_HTTP_Binding" type="tns:InvoiceInfo_Port">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="GetInvoiceList">
+			<soap:operation soapAction="http://wsdev.electrolux-na.com:7800/iHub/Congo/Invoice"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetInvoiceFile">
+			<soap:operation soapAction="http://wsdev.electrolux-na.com:7800/iHub/Congo/Invoice"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="InvoiceInfo_SOAP_HTTP_Service">
+		<wsdl:port binding="tns:InvoiceInfo_SOAP_HTTP_Binding" name="InvoiceInfo_Port">
+			<soap:address location="http://wsdev.electrolux-na.com:7800/iHub/Congo/Invoice"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

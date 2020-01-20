@@ -1,0 +1,53 @@
+DECLARE IntegrationName EXTERNAL CHAR '';
+DECLARE Sender EXTERNAL CHAR '';
+DECLARE Receiver EXTERNAL CHAR '';
+DECLARE TranType EXTERNAL CHAR '';
+DECLARE IntegrationPrefix EXTERNAL CHAR '';
+DECLARE PublishPayload EXTERNAL BOOLEAN TRUE;
+
+CREATE COMPUTE MODULE IC0092_B2B_Common_Publish2JMS_SetCorrelationId
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		CALL CopyEntireMessage();
+		
+		DECLARE currentTime CHARACTER CAST(CURRENT_TIMESTAMP  AS CHARACTER FORMAT 'yyyyMMddHHmmssSSSSSS');
+		
+		SET OutputRoot.JMSTransport.Transport_Folders.Header_Values.JMSCorrelationID = IntegrationPrefix || '_' || currentTime;
+		
+		SET OutputRoot.JMSTransport.Transport_Folders.Application_Properties.IntegrationName = IntegrationName;
+		SET OutputRoot.JMSTransport.Transport_Folders.Application_Properties.Sender 		 = Sender;
+		SET OutputRoot.JMSTransport.Transport_Folders.Application_Properties.Receiver		 = Receiver;
+		SET OutputRoot.JMSTransport.Transport_Folders.Application_Properties.TranType		 = TranType;
+		
+		IF (OutputRoot.JMSTransport.Transport_Folders.Header_Values.JMSMessageID IS NULL) OR (RTRIM(OutputRoot.JMSTransport.Transport_Folders.Header_Values.JMSMessageID) = '') THEN
+			SET OutputRoot.JMSTransport.Transport_Folders.Application_Properties.MessageID	 = OutputRoot.JMSTransport.Transport_Folders.Header_Values.JMSCorrelationID;
+		ELSE
+			SET OutputRoot.JMSTransport.Transport_Folders.Application_Properties.MessageID	 = OutputRoot.JMSTransport.Transport_Folders.Header_Values.JMSMessageID;
+		END IF;
+		
+		SET OutputRoot.JMSTransport.Transport_Folders.Application_Properties.CorrelationID	 = OutputRoot.JMSTransport.Transport_Folders.Header_Values.JMSCorrelationID;
+		
+		IF PublishPayload THEN		
+			SET OutputRoot.JMSTransport.Transport_Folders.Application_Properties.PublishPayload		 = 'TRUE';
+		ELSE
+			SET OutputRoot.JMSTransport.Transport_Folders.Application_Properties.PublishPayload		 = 'FALSE';
+		END IF;
+		
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		SET OutputRoot = InputRoot;
+	END;
+END MODULE;

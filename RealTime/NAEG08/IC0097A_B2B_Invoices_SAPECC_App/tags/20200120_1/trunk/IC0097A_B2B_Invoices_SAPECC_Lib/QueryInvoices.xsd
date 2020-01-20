@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://congo.electrolux.com/invoice/query" xmlns="http://congo.electrolux.com/invoice/query" xmlns:ibmSchExtn="http://www.ibm.com/schema/extensions" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<xsd:element ibmSchExtn:docRoot="true" name="InvoiceListRequest">
+		<xsd:annotation>
+			<xsd:documentation>Query for list of invoices, based on the supplied search criteria</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element minOccurs="1" name="RequesterID"
+					type="xsd:string" />
+				<xsd:element minOccurs="0" name="CustomerID"
+					type="xsd:string" />
+				<xsd:element maxOccurs="unbounded"
+					name="QueryExpression" type="QueryExpression" />
+				<xsd:element maxOccurs="unbounded" minOccurs="0"
+					name="SortBy" type="SortBy" />
+				<xsd:element minOccurs="0" name="MaxRows"
+					type="MaxRows" />
+				<xsd:element minOccurs="0" name="RequestTimeout"
+					type="RequestTimeout" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element ibmSchExtn:docRoot="true" name="InvoiceListResponse">
+		<xsd:annotation>
+			<xsd:documentation>Response back to the calling system</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="1" name="ResponseHeader" type="ResponseHeader"/>
+				<xsd:element maxOccurs="1" minOccurs="0" name="ResponseDetail" type="ResponseDetail"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+		<xsd:element ibmSchExtn:docRoot="true" name="InvoiceDocumentRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element minOccurs="1" name="RequesterID"
+					type="xsd:string" />
+				<xsd:element maxOccurs="unbounded"
+					name="QueryExpression" type="QueryExpression" />				
+				<xsd:element minOccurs="0" name="RequestTimeout"
+					type="RequestTimeout" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element ibmSchExtn:docRoot="true" name="InvoiceDocumentResponse">
+		<xsd:annotation>
+			<xsd:documentation>Response back to the calling system</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="1" name="ResponseHeader" type="ResponseHeader"/>
+				<xsd:element maxOccurs="1" minOccurs="0" name="ResponseDetail" type="DocResponseDetail"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:complexType name="QueryExpression">
+		<xsd:sequence>
+			<xsd:element name="QueryFieldName" type="QueryFieldList"/>
+			<xsd:element name="QueryOperator" type="QueryOperator"/>
+			<xsd:element minOccurs="0" name="QueryValue1" type="xsd:string"/>
+			<xsd:element minOccurs="0" name="QueryValue2" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="QueryFieldList">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="InvoiceNumber"/>
+			<xsd:enumeration value="OrderNumber"/>
+			<xsd:enumeration value="PONumber"/>
+			<xsd:enumeration value="InvoiceDate"/>
+			<xsd:enumeration value="SerialNumber"/>
+			<xsd:enumeration value="ShipTo"/>
+			<xsd:enumeration value="SoldTo"/>
+			<xsd:enumeration value="SalesOrg"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="QueryOperator">
+		<xsd:attribute name="Operator" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:NMTOKEN">
+					<xsd:enumeration value="IsNull"/>
+					<xsd:enumeration value="DateLastWeek"/>
+					<xsd:enumeration value="DateThisQuarter"/>
+					<xsd:enumeration value="NotLike"/>
+					<xsd:enumeration value="InRange"/>
+					<xsd:enumeration value="LessThanEqual"/>
+					<xsd:enumeration value="DateThisMonth"/>
+					<xsd:enumeration value="NotInRange"/>
+					<xsd:enumeration value="GreaterThan"/>
+					<xsd:enumeration value="NotNull"/>
+					<xsd:enumeration value="GreaterThanEqual"/>
+					<xsd:enumeration value="DateLastQuarter"/>
+					<xsd:enumeration value="DateLastMonth"/>
+					<xsd:enumeration value="DateYesterday"/>
+					<xsd:enumeration value="DateThisYear"/>
+					<xsd:enumeration value="DateLastYear"/>
+					<xsd:enumeration value="Like"/>
+					<xsd:enumeration value="Equal"/>
+					<xsd:enumeration value="NotEqual"/>
+					<xsd:enumeration value="LessThan"/>
+					<xsd:enumeration value="DateToday"/>
+					<xsd:enumeration value="DateThisWeek"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="SortBy">
+		<xsd:sequence>
+			<xsd:element minOccurs="1" name="SortFieldName" type="QueryFieldList"/>
+			<xsd:element minOccurs="0" name="SortOrder" type="xsd:int"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RequestTimeout">
+		<xsd:attribute name="Seconds" type="xsd:int" use="required"/>
+	</xsd:complexType>
+	<xsd:complexType name="ResponseHeader">
+		<xsd:sequence>
+			<xsd:element minOccurs="1" name="Status" type="xsd:string"/>
+			<xsd:element minOccurs="0" name="Description" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ResponseDetail">
+		<xsd:sequence>
+			<xsd:element minOccurs="1" name="HitlistRows" type="HitlistRows"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="DocResponseDetail">
+		<xsd:choice>
+			<xsd:sequence>
+				<xsd:element minOccurs="0" name="VirtualPath" type="xsd:string"/>
+				<xsd:element name="FileName" type="xsd:string"/>
+				<xsd:element minOccurs="0" name="FileSizeBytes" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:choice>
+	</xsd:complexType>
+	<xsd:complexType name="LeaveOnDisk">
+		<xsd:attribute name="Minutes" type="xsd:int" use="required"/>
+	</xsd:complexType>
+	<xsd:complexType name="MaxRows">
+		<xsd:attribute name="Value" type="xsd:int" use="required"/>
+	</xsd:complexType>
+	<xsd:complexType name="HitlistRows">
+		<xsd:sequence>
+			<xsd:element maxOccurs="unbounded" name="RetrievalType" type="RetrievalType"/>
+			<xsd:element maxOccurs="unbounded" name="IndexField" type="IndexField"/>
+			<xsd:element maxOccurs="unbounded" name="IndexSet" type="IndexSet"/>
+			<xsd:element name="PartialResults" type="PartialResults"/>
+			<xsd:element minOccurs="0" name="PrivateData" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="IndexField">
+		<xsd:sequence>
+			<xsd:element name="FieldName" type="FieldName"/>
+			<xsd:element name="FieldLabel" type="xsd:string"/>
+			<xsd:element name="ShowValue" type="ShowValue"/>
+			<xsd:element minOccurs="0" name="ShowForReindex" type="ShowForReindex"/>
+			<xsd:element minOccurs="0" name="Reindexable" type="Reindexable"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="FieldName">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:string">
+				<xsd:attribute name="FieldID" type="xsd:ID" use="required"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="ShowValue">
+		<xsd:attribute name="Value" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:NMTOKEN">
+					<xsd:enumeration value="True"/>
+					<xsd:enumeration value="False"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="ShowForReindex">
+		<xsd:attribute name="Value" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:NMTOKEN">
+					<xsd:enumeration value="True"/>
+					<xsd:enumeration value="False"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="Reindexable">
+		<xsd:attribute name="Value" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:NMTOKEN">
+					<xsd:enumeration value="True"/>
+					<xsd:enumeration value="False"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="IndexSet">
+		<xsd:sequence>
+			<xsd:element maxOccurs="unbounded" name="IndexValue" type="IndexValue"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="IndexValue">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:string">
+				<xsd:attribute name="FieldIDRef" type="xsd:IDREF" use="required"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="DisplayOption">
+		<xsd:attribute name="Option" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:NMTOKEN">
+					<xsd:enumeration value="TEXT"/>
+					<xsd:enumeration value="HTML"/>
+					<xsd:enumeration value="PDF"/>
+					<xsd:enumeration value="AUTO"/>
+					<xsd:enumeration value="EMAIL"/>
+					<xsd:enumeration value="REPORTMINE"/>
+					<xsd:enumeration value="RAW"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="DefaultDisplayOption">
+		<xsd:attribute name="Option" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:NMTOKEN">
+					<xsd:enumeration value="TEXT"/>
+					<xsd:enumeration value="HTML"/>
+					<xsd:enumeration value="PDF"/>
+					<xsd:enumeration value="AUTO"/>
+					<xsd:enumeration value="REPORTMINE"/>
+					<xsd:enumeration value="RAW"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="PartialResults">
+		<xsd:attribute name="Value" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:NMTOKEN">
+					<xsd:enumeration value="True"/>
+					<xsd:enumeration value="False"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="RetrievalType">
+		<xsd:sequence>
+			<xsd:element name="RetrievalName" type="xsd:string"/>
+			<xsd:element name="RetrievalLabel" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="DocDescriptor">
+		<xsd:attribute name="Value" type="xsd:string" use="required"/>
+	</xsd:complexType>
+	<xsd:complexType name="GenerateAnnotations">
+		<xsd:attribute name="Value" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:NMTOKEN">
+					<xsd:enumeration value="True"/>
+					<xsd:enumeration value="False"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="GenerateBookmarks">
+		<xsd:attribute name="Value" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:NMTOKEN">
+					<xsd:enumeration value="True"/>
+					<xsd:enumeration value="False"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="Linearize">
+		<xsd:attribute name="Value" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:NMTOKEN">
+					<xsd:enumeration value="True"/>
+					<xsd:enumeration value="False"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="UsePreprintedForm">
+		<xsd:attribute name="Value" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:NMTOKEN">
+					<xsd:enumeration value="True"/>
+					<xsd:enumeration value="False"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="AcrobatVersion">
+		<xsd:attribute name="Value" type="xsd:string" use="required"/>
+	</xsd:complexType>
+	<xsd:complexType name="ReturnFilename">
+		<xsd:sequence>
+			<xsd:element minOccurs="0" name="LeaveOnDisk" type="LeaveOnDisk"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>
